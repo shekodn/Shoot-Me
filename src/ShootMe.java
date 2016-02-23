@@ -23,9 +23,8 @@ import java.util.logging.Logger;
 /**
  * Juego1
  *
- * El jugador debe mover el vaso de cafe con el mouse y atrapar los granos de
- * cafe que van cayendo del cielo. El Juego maneja: puntaje y controlador de
- * vidas.
+ * El jugador debe de mover a la niña, la cual puede disparar. El objetivo del 
+ * juego es destruir a todas las manzanas antes de quedarse sin vidas
  *
  * @authors Sergio Diaz A01192313, Ana Karen Beltran A01192508
  * @version 1
@@ -40,6 +39,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     
     private LinkedList<Base> lklBalas; // Objeto bala que destruye a malos  
     
+    private boolean bDisparo; //bandera para generar una nueva bala
    
     
     /*IMAGENES*/
@@ -75,6 +75,10 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iRandomMalos; //indica el # de malos a crear
     private int iRandomBuenos; //indica el # de buenos a crear
     private int iBalas;
+    private int iDireccionBala; //Maraca si la vala sale horizontal o con 
+            //inclinacioon
+    
+    private int iVelocidadBala; //controla la velocidad de la bala 
     
     private long tiempoActual;	//Tiempo de control de la animación
 
@@ -123,13 +127,17 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      */
     public void initVars() {
         lklMalos = new LinkedList<Base>(); //Creo lista de malitos
-        
+        lklBalas = new LinkedList<Base>(); //Creo la lista de balas
       
+        iBalas = 1; //se inicializa el cartucho con una bala 
 
         /* genero el random de los malitos entre 8 y 10*/
         iRandomMalos = (int) (Math.random() * 4) + 8;
        
+        iDireccionBala = 12; //se iniciliza la bala apuntando arriba
+        iVelocidadBala = 3;
         
+        bDisparo = false; //bandera que controla el disparo
 
         iVelocidad = 1; //Inicializo velocidad inicial
         iPuntos = 0; //Inicializar los puntos
@@ -174,11 +182,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         basPrincipal = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
         
         
-        //Creo el objeto para el malo
+        //Creo el objeto para las balas 
         for (int iI = 0; iI < iBalas; iI++) {
             //creo a un malito
-            Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
-            //añado un elemento-malito a la lista 
+            Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage
+                (urlImagenBala));
+            
+            //añado un elemento de bala a la lista 
             lklBalas.add(basBala);
         }
         
@@ -203,6 +213,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             reposicionaMalo(basMalo);
         }
         
+        //Se posiciona a los objetos malos, en derecha y fuera del applet
+        for (Base basBala : lklBalas) {
+            reposicionaMalo(basBala);
+        }
+        
     }
 
     /**
@@ -219,6 +234,55 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //reposiciona a un elemento en especifico
         basMalo.setX((int)(Math.random()*(getWidth() - basMalo.getAncho())));
         basMalo.setY(((int)(Math.random()* (-1 * getHeight())))); 
+    }
+    
+    
+    
+    /**
+     * reposicionaMalo
+     *
+     * Metodo que reposiciona a un elmento de la lista de objetos denominados 
+     * como bala
+     *
+     * @param basBala , es el objeto de la lista que necesita ser reposicionado
+     * 
+     *
+     */
+    public void disparo() {
+       
+        //Se posiciona a los objetos malos, en derecha y fuera del applet
+        for (Base basBala : lklBalas) {
+                        
+            if (bDisparo) {
+                
+                lklBalas.add(basBala);
+                actualizaBala(basBala);
+           }
+        }  
+    }
+    
+    public void actualizaBala(Base basBala) {
+        
+        if (iDireccionBala == 12) {
+            
+           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+            
+        }
+        
+        if (iDireccionBala == 3) {
+            
+           basBala.setX(basBala.getX() + (1 * iVelocidadBala)); 
+           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+            
+        }
+        
+        if (iDireccionBala == 9) {
+            
+           basBala.setX(basBala.getX() - (1 * iVelocidadBala)); 
+           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+ 
+        }
+        
     }
 
     /**
@@ -258,6 +322,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void actualiza() {
         actualizaPrincipal();
         actualizaListas();
+        disparo();
+        
     }
 
     public void actualizaPrincipal() {
@@ -276,6 +342,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 basPrincipal.setY(basPrincipal.getY());
             }
         }
+    }
+    
+    public void actualizaBalasCartucho() {
+        
+        
     }
 
     public void actualizaListas() {
@@ -412,6 +483,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             for (Base basMalo : lklMalos) {
                 basMalo.paint(graDibujo, this);
             }
+            
+            //Dibujan los objetos de los personajes malos
+            for (Base basBala : lklBalas) {
+                basBala.paint(graDibujo, this);
+            }
 
         } // sino se ha cargado se dibuja un mensaje 
         else {
@@ -435,10 +511,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     }
 
     public void keyPressed(KeyEvent keyEvent) {
-        /*
-        Q(1)   P(2)
-        A(3)   L(4)
-         */
+
         if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {//1
             iDireccion = 1;//arriba-izq
             bPressed = true; //prendo booleana de teclas
@@ -446,7 +519,21 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {//2
             iDireccion = 2;//arriba-derecha
             bPressed = true; //prendo booleana de teclas
-           
+            
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//2
+         
+            bDisparo = true; //prendo booleana de teclas
+            iDireccionBala = 12;
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
+
+            bDisparo = true; //prendo booleana de teclas
+            iDireccionBala = 9;
+
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//2
+
+            bDisparo = true; //prendo booleana de teclas
+            iDireccionBala = 3;
+
          
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
             try {
@@ -463,8 +550,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
     }
 
-    public void keyReleased(KeyEvent ke) {
+    public void keyReleased(KeyEvent keyEvent) {
         bPressed = false; //apago booleana de teclas
+        
+        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE || keyEvent.getKeyCode() 
+                == KeyEvent.VK_A || keyEvent.getKeyCode() == KeyEvent.VK_S) {
+            
+            bDisparo = false;  
+        }
+       
+        
     }
 
     public int getHeight() {
