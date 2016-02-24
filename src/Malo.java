@@ -13,9 +13,43 @@ import java.awt.Image;
  */
 
 public class Malo extends Base{
+   
+    private char cTipo;
     
-    public Malo(int iX, int iY, Image imaImagen) {
+    
+    public Malo(char cTipo, int iX, int iY, Image imaImagen) {
         super(iX, iY, imaImagen);
-    }  
+        
+        this.cTipo = cTipo;
+        
+    }
+       
+    
+    /**
+     * setTipo
+     * 
+     * Metodo modificador usado para cambiar la posicion en x del objeto
+     * 
+     * @param cTipo es la <code>posicion en x</code> del objeto.
+     * 
+     */
+    public void setTipo(char cTipo) {
+        this.cTipo = cTipo;
+    }
+    
+    /**
+     * getTipo
+     * 
+     * Metodo de acceso que regresa la posicion en x del objeto 
+     * 
+     * @return cTipo es la <code>posicion en x</code> del objeto.
+     * 
+     */
+    public char getTipo() {
+            return cTipo;
+    }
+    
+    
+    
 }
 

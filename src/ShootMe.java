@@ -126,7 +126,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         iPosicionVidas = 0;
 
         /* genero el random de los malitos entre 8 y 10*/
-        iRandomMalos = (int) (Math.random() * 4) + 8;
+        iRandomMalos = (int) (Math.random() * (6)) + 10;
                
         bDisparo = false; //bandera que controla el disparo
 
@@ -191,12 +191,36 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         
         //Creo el objeto para el malo
+        
+        if (iRandomMalos < 15) {
+
+            for (int iI = 0; iI < 1; iI++) {
+                //creo a un malito
+                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+                //añado un elemento-malito a la lista 
+                lklMalos.add(basMalo);
+            }
+
+        } else {
+
+            for (int iI = 0; iI < 2; iI++) {
+                //creo a un malito
+                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+                //añado un elemento-malito a la lista 
+                lklMalos.add(basMalo);
+            }
+
+        }
+            
+           
+        
         for (int iI = 0; iI < iRandomMalos; iI++) {
             //creo a un malito
-            Malo basMalo = new Malo(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+            Malo basMalo = new Malo('n',0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
             //añado un elemento-malito a la lista 
             lklMalos.add(basMalo);
         }
+        
        
     }
 
@@ -239,9 +263,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         basMalo.setY(((int) (Math.random() * (-1 * getHeight()))));
         //basMalo.setY((int) (Math.random() * (40)-(-1*(getHeight()+90))));
     }
-    
-    
-    
 
     /**
      * run
@@ -258,23 +279,27 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
          */
         while (true) {
 
-                if (!bPause || !bGameOver) {
-                    actualiza();
-                    checaColision();
-                    try {
-                        // El hilo del juego se duerme. 
-                        Thread.sleep(20);
-                    } catch (InterruptedException iexError) {
-                        System.out.println("Hubo un error en el juego " + iexError.
-                                toString());
-                    }
+            if (!bPause || !bGameOver) {
+                
+                actualiza();
+                checaColision();
+                try {
+                    // El hilo del juego se duerme. 
+                    Thread.sleep(20);
+                } catch (InterruptedException iexError) {
+                    System.out.println("Hubo un error en el juego " + iexError.
+                            toString());
                 }
-                if (!bGameOver){
-                    repaint();
-                }
+                
+            }
+
+            if (!bGameOver) {
+                
+               
+                repaint();
+            }
         }
-        
-        //gameover
+
     }
 
     /**
@@ -323,11 +348,58 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public void actualizaListas() {
-        for (Base basMalo : lklMalos) { //Mover a cada objeto
-            //Los malos caen
-            int iPixeles = (int) (Math.random() * 4) + 3; //3-5
-            basMalo.setY(basMalo.getY() + (1 * iVelocidad));
+        
+        for (Malo basMalo : lklMalos) { //Mover a cada objeto
+
+            if (basMalo.getTipo() == 'n' || basMalo.getTipo() == 'h') {
+                //Los malos caen
+                int iPixeles = (int) (Math.random() * 4) + 3; //3-5
+                basMalo.setY(basMalo.getY() + (1 * iVelocidad));
+                
+                
+                
+            } else {
+
+                if (basPrincipal.getX() < basMalo.getX()) {
+                    basMalo.setX(basMalo.getX() - iVelocidad);
+                } else if (basPrincipal.getX() > basMalo.getX()) {
+                    basMalo.setX(basMalo.getX() + iVelocidad);
+                }
+
+                if (basPrincipal.getY() < basMalo.getY()) {
+                    basMalo.setY(basMalo.getY() - iVelocidad);
+                } else if (basPrincipal.getY() > basMalo.getY()) {
+                    basMalo.setY(basMalo.getY() + iVelocidad);
+                }
+                
+                if(basMalo.getY() + basMalo.getAlto() >= getHeight() - basPrincipal.getAlto()){
+                    
+                    basMalo.setTipo('h');
+                }
+
+            }
         }
+        
+            
+        /*
+        
+        if (basPrincipal.getX() < basMalo.getX())
+            {
+                basMalo.setX(basMalo.getX() - 3 * iVel);
+            } else if (basPrincipal.getX() > basMalo.getX()){
+                basMalo.setX(basMalo.getX() + 3 * iVel);
+            }
+
+            if (basPrincipal.getY() < basMalo.getY())
+            {
+                basMalo.setY(basMalo.getY() - 3 * iVel);
+            } else if (basPrincipal.getY() > basMalo.getY()){
+                basMalo.setY(basMalo.getY() + 3 * iVel);
+            }
+        */
+        
+    
+        
         
     }
     
@@ -383,6 +455,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                     
                     if (iVidas == 0){
                         bGameOver = true;
+                         bPause = false;
                     }
                 }
             }
@@ -392,6 +465,12 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         for (Malo basMalo : lklMalos) {
             //Si los malos llegan al final
             if (basMalo.getY() > 500) {
+                
+                if(basMalo.getTipo() == 'h'){
+                    
+                    basMalo.setTipo('s');
+                }
+                
                 reposicionaMalo(basMalo); //cambia la posicion del elemento
             }
         }
@@ -568,7 +647,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
     
         //ifs de opciones de juego 
-        if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {//pausa
+        if ((keyEvent.getKeyCode() == KeyEvent.VK_P) && !bGameOver) {//pausa
 
             bPause = !bPause;
         }
