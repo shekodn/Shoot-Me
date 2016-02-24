@@ -361,6 +361,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             }
             repaint();
         }
+        
+        //gameover
     }
 
     /**
