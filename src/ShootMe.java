@@ -129,6 +129,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         lklVidas = new LinkedList<Base>(); //se crean vidas
       
         bPause = false; //Juego comienza sin pausa 
+        bGameOver = false;//Indica si el juego esta en gameOver
         
         iBalas = 0; //se inicializa el cartucho con la bala de la posicion 0
         
@@ -141,7 +142,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         iVelocidad = 2; //Inicializo velocidad inicial
         iPuntos = 0; //Inicializar los puntos
-        iVidas = 5;
+        iVidas = 1;
         iContMalo = 0; //Inicializo contaor
 
 
@@ -267,8 +268,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
          */
         while (true) {
 
-            if (iVidas != 0) {
-                if (!bPause) {
+                if (!bPause || !bGameOver) {
                     actualiza();
                     checaColision();
                     try {
@@ -279,8 +279,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                                 toString());
                     }
                 }
-                repaint();
-            }
+                if (!bGameOver){
+                    repaint();
+                }
         }
         
         //gameover
@@ -389,6 +390,10 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                     lklVidas.removeLast();
                     iVelocidad++;                    
                     iContMalo = 0; //reinicio contador a 0
+                    
+                    if (iVidas == 0){
+                        bGameOver = true;
+                    }
                 }
             }
         }
@@ -577,11 +582,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             bPause = !bPause;
         }
 
-        if ((keyEvent.getKeyCode() == KeyEvent.VK_R)) {//reiniciar juego
-
-            
-        }
-
         //if de basPrincipal 
         if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {//1
             iDireccion = 1;//arriba-izq
@@ -597,6 +597,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     }
     
     public void keyReleased(KeyEvent keyEvent) {
+        
+        if ((keyEvent.getKeyCode() == KeyEvent.VK_R)) {//reiniciar juego
+            if (iVidas == 0){
+                initVars();
+                creaImagenes();
+                creaObjetos();
+                posicionaPers();
+                bGameOver = false;
+            }
+        }
         
         //ifs de disparos
         if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//centro
