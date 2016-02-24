@@ -427,20 +427,30 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void chechaColisionBalas() {
         
         //CHECA COLISION ENTRE BALAS Y MALOS
+        
         for (Malo basMalo : lklMalos) {
-            for (Bala basBala : lklBalas) {
+            for (int iI = 0; iI < lklBalas.size(); iI++) {
+
+                Bala basBala = (Bala) lklBalas.get(iI);
+
                 if (basBala.intersecta(basMalo)) {
-                    
-                    lklBalas.remove(basBala); //borra al elemento de la lista
+
+                    lklBalas.remove(basBala);
                     reposicionaMalo(basMalo); //cambia posicion del malo
                     iPuntos += 10;
                     soundDestruye.play();//sonido al colisionar
+
                 }
             }
         }
-  
+        
+        
         //CHECA COLISION ENTRE BALAS Y JFRAME
-        for (Bala basBala : lklBalas) {
+        
+        for (int iI = 0; iI < lklBalas.size(); iI++) {
+
+            Bala basBala = (Bala) lklBalas.get(iI);
+
             if (basBala.getY() < 0) {//checa arriba
                 lklBalas.remove(basBala); //borra al elemento de la lista
             }
@@ -451,6 +461,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 lklBalas.remove(basBala); //borra al elemento de la lista
             }
         }
+        
     }
 
     public void checaColisionPrincipal() {
