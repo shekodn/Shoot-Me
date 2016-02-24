@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,7 +13,7 @@ import javax.swing.JFrame;
 /**
  * Juego1
  *
- * El jugador debe de mover a la niña, la cual puede disparar. El objetivo del 
+ * El jugador debe de mover a la niña, la cual puede disparar. El objetivo del
  * juego es destruir a todas las manzanas antes de quedarse sin vidas
  *
  * @authors Sergio Diaz A01192313, Ana Karen Beltran A01192508
@@ -29,8 +30,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private LinkedList<Bala> lklBalas; // Objeto bala que destruye a malos 
     /*Lista de las vidas*/
     private LinkedList<Base> lklVidas; //Lista con vidas 
-    
-    
+
     /*IMAGENES*/
     private Image imaImagenFondo;        // para dibujar la imagen de fondo
     private Image imaImagenGameOver; //para dibujar cuando se acabe el juego
@@ -39,12 +39,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private Image imaImagenBueno; //para dibujar el objeto bueno
     private Image imaImagenBala; //Imagen de una balita
     private Image imaImagenVida; //imagen de la vida
-    
+
     /* objetos para manejar el buffer del Applet y que la imagen no parpadee */
     private Image imaImagenApplet;   // Imagen a proyectar en Applet (principal)
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
 
-    
     /*URLS*/
     private URL urlImagenPrincipal;
     private URL urlImagenFondo;
@@ -93,7 +92,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         bump = new SoundClip("gunshot3.wav");
         soundDestruye = new SoundClip("beep1.wav");
-        
+
         initVars();
         creaImagenes();
         creaObjetos();
@@ -104,8 +103,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //Escojo color y tamaño
         setFont(new Font("Helvetica", Font.BOLD, 15));
 
-        
-         // Declaras un hilo
+        // Declaras un hilo
         Thread th = new Thread(this);
         // Empieza el hilo
         th.start();
@@ -117,24 +115,23 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         lklMalos = new LinkedList<Malo>(); //Creo lista de malitos
         lklBalas = new LinkedList<Bala>(); //Creo la lista de balas
         lklVidas = new LinkedList<Base>(); //se crean vidas
-      
+
         bPause = false; //Juego comienza sin pausa 
         bGameOver = false;//Indica si el juego esta en gameOver
-        
+
         iBalas = 0; //se inicializa el cartucho con la bala de la posicion 0
-        
+
         iPosicionVidas = 0;
 
         /* genero el random de los malitos entre 8 y 10*/
         iRandomMalos = (int) (Math.random() * (6)) + 10;
-               
+
         bDisparo = false; //bandera que controla el disparo
 
         iVelocidad = 2; //Inicializo velocidad inicial
         iPuntos = 0; //Inicializar los puntos
         iVidas = 1;
         iContMalo = 0; //Inicializo contaor
-
 
         bPressed = false; //inicializa el booleano de pressed
     }
@@ -151,7 +148,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         // Creo la imagen del fin de juego
         urlImagenGameOver = this.getClass().getResource("gameOver1.jpg");
         imaImagenGameOver = Toolkit.getDefaultToolkit().getImage(urlImagenGameOver);
-        
+
         // Creo la imagen de la pausa de juego
         urlImagenPausa = this.getClass().getResource("GamePause.jpg");
         imaImagenPausa = Toolkit.getDefaultToolkit().getImage(urlImagenPausa);
@@ -163,11 +160,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //Creo la imagen del bueno
         urlImagenBueno = this.getClass().getResource("good.png");
         imaImagenBueno = Toolkit.getDefaultToolkit().getImage(urlImagenBueno);
-        
+
         //Creo la imagen de la bala 
         urlImagenBala = this.getClass().getResource("bala.gif");
         imaImagenBueno = Toolkit.getDefaultToolkit().getImage(urlImagenBala);
-        
+
         //Creo la imagen de la vida 
         urlImagenVida = this.getClass().getResource("vidas.png");
         imaImagenVida = Toolkit.getDefaultToolkit().getImage(urlImagenVida);
@@ -177,21 +174,17 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void creaObjetos() {
         // Creo el objeto para principal
         basPrincipal = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
-        
-        
+
         //Creo el objeto para las vidas 
         for (int iI = 0; iI < iVidas; iI++) {
             //creo a un malito
-            Base basVida = new Base(0, 0, Toolkit.getDefaultToolkit().getImage
-                (urlImagenVida));
-            
+            Base basVida = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenVida));
+
             //añado un elemento de bala a la lista 
             lklVidas.add(basVida);
         }
-        
-        
+
         //Creo el objeto para el malo
-        
         if (iRandomMalos < 15) {
 
             for (int iI = 0; iI < 1; iI++) {
@@ -211,17 +204,14 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             }
 
         }
-            
-           
-        
+
         for (int iI = 0; iI < iRandomMalos; iI++) {
             //creo a un malito
-            Malo basMalo = new Malo('n',0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+            Malo basMalo = new Malo('n', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
             //añado un elemento-malito a la lista 
             lklMalos.add(basMalo);
         }
-        
-       
+
     }
 
     public void posicionaPers() {
@@ -234,17 +224,14 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             reposicionaMalo(basMalo);
         }
 
-        
         //Se posiciona a los objetos malos, en derecha y fuera del applet
         for (Base basVida : lklVidas) {
-           basVida.setX(iPosicionVidas + 10);
-           basVida.setY(30);
-           
-           iPosicionVidas = iPosicionVidas + 45;
+            basVida.setX(iPosicionVidas + 10);
+            basVida.setY(30);
+
+            iPosicionVidas = iPosicionVidas + 45;
         }
-        
-        
-        
+
     }
 
     /**
@@ -260,8 +247,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void reposicionaMalo(Base basMalo) {
         //reposiciona a un elemento en especifico
         basMalo.setX((int) (Math.random() * (getWidth() - basMalo.getAncho())));
-        basMalo.setY(((int) (Math.random() * (-1 * getHeight()))));
-        //basMalo.setY((int) (Math.random() * (40)-(-1*(getHeight()+90))));
+        
+        
+        basMalo.setY((int) (Math.random() * 100) + (basMalo.getAlto()+50)); //3-5
+        
+        //basMalo.setY(((int) (Math.random() * (-1 * getHeight()))));
     }
 
     /**
@@ -280,7 +270,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         while (true) {
 
             if (!bPause && !bGameOver) {
-                
+
                 actualiza();
                 checaColision();
                 try {
@@ -290,12 +280,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                     System.out.println("Hubo un error en el juego " + iexError.
                             toString());
                 }
-                
+
             }
 
             if (!bGameOver) {
-                
-               
+
                 repaint();
             }
         }
@@ -312,52 +301,48 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         actualizaPrincipal();
         actualizaListas();
         actualizaBalas();
-        
-        
+
     }
+
     /**
      * actualizaPrincipal
      *
-     * Método usado actualizar al principal
-     * Se manda llamar en actualiza
+     * Método usado actualizar al principal Se manda llamar en actualiza
      *
      */
     public void actualizaPrincipal() {
         //Si la tecla esta siendo presionada, cambiar su posicion del principal
-        
+
         if (bPressed) {
             if (iDireccion == 1) {
                 basPrincipal.setX(basPrincipal.getX() - 1 * 4);
-                
+
             } else if (iDireccion == 2) {
                 basPrincipal.setX(basPrincipal.getX() + 1 * 4);
-                           
+
             } else {
-                
+
                 basPrincipal.setX(basPrincipal.getX());
                 basPrincipal.setY(basPrincipal.getY());
             }
         }
     }
-    
+
     /**
      * actualizaListas
      *
-     * Método usado actualizar la lista de malos
-     * Se manda llamr en actualiza
+     * Método usado actualizar la lista de malos Se manda llamr en actualiza
      *
      */
     public void actualizaListas() {
-        
+
         for (Malo basMalo : lklMalos) { //Mover a cada objeto
 
             if (basMalo.getTipo() == 'n' || basMalo.getTipo() == 'h') {
                 //Los malos caen
                 int iPixeles = (int) (Math.random() * 4) + 3; //3-5
                 basMalo.setY(basMalo.getY() + (1 * iVelocidad));
-                
-                
-                
+
             } else {
 
                 if (basPrincipal.getX() < basMalo.getX()) {
@@ -371,16 +356,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 } else if (basPrincipal.getY() > basMalo.getY()) {
                     basMalo.setY(basMalo.getY() + iVelocidad);
                 }
-                
-                if(basMalo.getY() + basMalo.getAlto() >= getHeight() - basPrincipal.getAlto()){
-                    
+
+                if (basMalo.getY() + basMalo.getAlto() >= getHeight() - basPrincipal.getAlto()) {
+
                     basMalo.setTipo('h');
                 }
 
             }
         }
-        
-            
+
         /*
         
         if (basPrincipal.getX() < basMalo.getX())
@@ -396,13 +380,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             } else if (basPrincipal.getY() > basMalo.getY()){
                 basMalo.setY(basMalo.getY() + 3 * iVel);
             }
-        */
-        
-    
-        
-        
+         */
     }
-    
+
     /**
      * actualizaBalas
      *
@@ -411,8 +391,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public void actualizaBalas() {
-                         
-        for (Bala basBala : lklBalas){
+
+        for (Bala basBala : lklBalas) {
             basBala.avanza();
         }
     }
@@ -433,8 +413,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      * chechaColisionMalos
      *
      * checa colision entre malos y principal, checa la colision de malos y el
-     * applet
-     * Se manda llamar en checaColision
+     * applet Se manda llamar en checaColision
      */
     public void chechaColisionMalos() {
         /*FOR PARA CHECAR COLISION ENTRE MALO Y PRINCIPAL*/
@@ -445,46 +424,47 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 reposicionaMalo(basMalo); //cambia posicion del que colisiona
                 iPuntos--;
                 iContMalo++;
-                
+
                 //checar si se debe quitar vida
                 if (iContMalo >= 5) {//cada 5 colisiones quita 1 vida
                     iVidas--; //quito vida
                     lklVidas.removeLast();
-                    iVelocidad++;                    
+                    iVelocidad++;
                     iContMalo = 0; //reinicio contador a 0
-                    
-                    if (iVidas == 0){
+
+                    if (iVidas == 0) {
                         bGameOver = true;
-                         bPause = false;
+                        bPause = false;
                     }
                 }
             }
         }
-        
+
         //CHECA LA COLISION DE LOS MALOS Y EL JFRAME
         for (Malo basMalo : lklMalos) {
             //Si los malos llegan al final
             if (basMalo.getY() > 500) {
-                
-                if(basMalo.getTipo() == 'h'){
-                    
+
+                if (basMalo.getTipo() == 'h') {
+
                     basMalo.setTipo('s');
                 }
-                
+
                 reposicionaMalo(basMalo); //cambia la posicion del elemento
             }
         }
-        
+
     }
+
     /*
      * chechaColisionBalas
      * 
      * checa colision entre balas y malos
      * checa colision entre balas y jframe
      */
-     
+
     public void chechaColisionBalas() {
-        
+
         //CHECA COLISION ENTRE BALAS Y MALOS
         for (Malo basMalo : lklMalos) {
             for (int iI = 0; iI < lklBalas.size(); iI++) {
@@ -501,9 +481,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 }
             }
         }
-        
+
         //CHECA COLISION ENTRE BALAS Y JFRAME
-        
         for (int iI = 0; iI < lklBalas.size(); iI++) {
 
             Bala basBala = (Bala) lklBalas.get(iI);
@@ -518,7 +497,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 lklBalas.remove(basBala); //borra al elemento de la lista
             }
         }
-        
+
     }
 
     public void checaColisionPrincipal() {
@@ -554,24 +533,24 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public void paint(Graphics graGrafico) {
-        
-        if (!bPause){
-        // Inicializan el DoubleBuffer
-        if (imaImagenApplet == null) {
-            imaImagenApplet = createImage(this.getSize().width,
-                    this.getSize().height);
-            graGraficaApplet = imaImagenApplet.getGraphics();
-        }
 
-        // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("images/field.png");
-        imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-        graGrafico.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
-                this);
+        if (!bPause) {
+            // Inicializan el DoubleBuffer
+            if (imaImagenApplet == null) {
+                imaImagenApplet = createImage(this.getSize().width,
+                        this.getSize().height);
+                graGraficaApplet = imaImagenApplet.getGraphics();
+            }
+
+            // Actualiza la imagen de fondo.
+            URL urlImagenFondo = this.getClass().getResource("images/field.png");
+            imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+            graGrafico.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
+                    this);
         }
         // Actualiza el Foreground.
         graGrafico.setColor(getForeground());
-        
+
         paint1(graGrafico);
     }
 
@@ -590,8 +569,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void paint1(Graphics graDibujo) {
         /*IMAGENES*/
         // si la imagen ya se cargo
-        if (!bPause && basPrincipal != null && imaImagenFondo != null && 
-                lklMalos != null) {
+        if (!bPause && basPrincipal != null && imaImagenFondo != null
+                && lklMalos != null) {
             // Dibuja la imagen de fondo
             graDibujo.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
                     this);
@@ -603,34 +582,33 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             for (Base basMalo : lklMalos) {
                 basMalo.paint(graDibujo, this);
             }
-            
+
             //Dibujan los objetos de los personajes malos
             for (Bala basBala : lklBalas) {
                 basBala.paint(graDibujo, this);
             }
-            
+
             //Dibuja las vidas
             for (Base basVida : lklVidas) {
                 basVida.paint(graDibujo, this);
             }
 
         } // sino se ha cargado se dibuja un mensaje 
-        
         else {
             //Da un mensaje mientras se carga el dibujo	
             graDibujo.drawString("No se cargo la imagen..", 20, 20);
         }
-        
-        if (bPause){
-            
+
+        if (bPause) {
+
             graDibujo.drawImage(imaImagenPausa, 0, 0, getWidth(),
                     getHeight(), this);
         }
 
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
-        
-        graDibujo.drawString("Score: " + iPuntos, getWidth() - 100, 
+
+        graDibujo.drawString("Score: " + iPuntos, getWidth() - 100,
                 getHeight() - 20);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
@@ -641,11 +619,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     }
 
     public void keyTyped(KeyEvent keyEvent) {
-         
+
     }
 
     public void keyPressed(KeyEvent keyEvent) {
-    
+
         //ifs de opciones de juego 
         if ((keyEvent.getKeyCode() == KeyEvent.VK_P) && !bGameOver) {//pausa
 
@@ -658,18 +636,18 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             bPressed = true; //prendo booleana de teclas
 
         }
-        
+
         if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {//2
             iDireccion = 2;//arriba-derecha
             bPressed = true; //prendo booleana de teclas
 
         }
     }
-    
+
     public void keyReleased(KeyEvent keyEvent) {
-        
+
         if ((keyEvent.getKeyCode() == KeyEvent.VK_R)) {//reiniciar juego
-            if (iVidas == 0){
+            if (iVidas == 0) {
                 initVars();
                 creaImagenes();
                 creaObjetos();
@@ -677,16 +655,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 bGameOver = false;
             }
         }
-        
+
         //ifs de disparos
         if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//centro
 
             bDisparo = true; //prendo booleana de teclas
-            
-            Bala basBala = new Bala('c', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+
+            Bala basBala = new Bala('c', 2, basPrincipal.getX() + basPrincipal.getAncho() / 2,
                     basPrincipal.getY(), Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
-            
+
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
         }
@@ -694,11 +672,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//izaquierda
 
             bDisparo = true; //prendo booleana de teclas
-            
-            Bala basBala = new Bala('i', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+
+            Bala basBala = new Bala('i', 2, basPrincipal.getX() + basPrincipal.getAncho() / 2,
                     basPrincipal.getY(), Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
-            
+
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
 
@@ -707,15 +685,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//derecha
 
             bDisparo = true; //prendo booleana de teclas
-            
-             Bala basBala = new Bala('d', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+
+            Bala basBala = new Bala('d', 2, basPrincipal.getX() + basPrincipal.getAncho() / 2,
                     basPrincipal.getY(), Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
-            
+
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
         }
-        
+
         bPressed = false; //apago booleana de teclas
         bDisparo = false;
         if (keyEvent.getKeyCode() == KeyEvent.VK_A || keyEvent.getKeyCode() == KeyEvent.VK_S || keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
