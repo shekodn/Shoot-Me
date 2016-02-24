@@ -146,11 +146,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
 
         // Creo la imagen del fin de juego
-        urlImagenGameOver = this.getClass().getResource("gameOver1.jpg");
+        urlImagenGameOver = this.getClass().getResource("images/GameOver.png");
         imaImagenGameOver = Toolkit.getDefaultToolkit().getImage(urlImagenGameOver);
 
         // Creo la imagen de la pausa de juego
-        urlImagenPausa = this.getClass().getResource("GamePause.jpg");
+        urlImagenPausa = this.getClass().getResource("images/Pause.png");
         imaImagenPausa = Toolkit.getDefaultToolkit().getImage(urlImagenPausa);
 
         //Creo la imagen del malo
