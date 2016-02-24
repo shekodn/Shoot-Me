@@ -239,8 +239,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             reposicionaMalo(basMalo);
         }
         
-        //Se posiciona a los objetos malos, en derecha y fuera del applet
-        for (Base basBala : lklBalas) {
+        //Se posiciona a los objetos bala, en el jFrame
+        for (Bala basBala : lklBalas) {
            basBala.setX(basPrincipal.getX()-100);
            basBala.setY(basPrincipal.getY() -100);
            
@@ -508,7 +508,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             }
             
             //Dibujan los objetos de los personajes malos
-            for (Base basBala : lklBalas) {
+            for (Bala basBala : lklBalas) {
                 basBala.paint(graDibujo, this);
             }
             
