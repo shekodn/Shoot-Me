@@ -377,6 +377,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void checaColision() {
         chechaColisionMalos();
         checaColisionPrincipal();
+        chechaColisionBalas();
+       
     }
 
     /**
@@ -387,7 +389,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      */
     public void chechaColisionMalos() {
         /*FOR PARA CHECAR COLISION ENTRE MALO Y PRINCIPAL*/
-        for (Base basMalo : lklMalos) {
+        for (Malo basMalo : lklMalos) {
             //Intersecta esta en la clase Base
             if (basPrincipal.intersecta(basMalo)) {
                 bump.play(); //sonido al colisionar
@@ -405,8 +407,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             }
         }
         
-        //CHECA LA COLISION DE LOS MALOS Y EL APPLET
-        for (Base basMalo : lklMalos) {
+        //CHECA LA COLISION DE LOS MALOS Y EL JFRAME
+        for (Malo basMalo : lklMalos) {
             //Si los malos llegan al final
             if (basMalo.getY() > 500) {
                 reposicionaMalo(basMalo); //cambia la posicion del elemento
@@ -414,7 +416,40 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
         
     }
-
+    /*
+     * chechaColisionBalas
+     * chechaColisionMalos
+     *
+     * checa colision entre balas y malos
+     */
+     
+    public void chechaColisionBalas() {
+        
+        //CHECA COLISION ENTRE BALAS Y MALOS
+        for (Malo basMalo : lklMalos) {
+            for (Bala basBala : lklBalas) {
+                if (basBala.intersecta(basMalo)) {
+                    bump.play(); //sonido al colisionar
+                    lklBalas.remove(basBala); //borra al elemento de la lista
+                    reposicionaMalo(basMalo); //cambia posicion del malo
+                    iPuntos += 10;
+                }
+            }
+        }
+  
+        //CHECA COLISION ENTRE BALAS Y JFRAME
+        for (Bala basBala : lklBalas) {
+            if (basBala.getY() < 0) {//checa arriba
+                lklBalas.remove(basBala); //borra al elemento de la lista
+            }
+            if (basBala.getX() < 0) {//checa izq
+                lklBalas.remove(basBala); //borra al elemento de la lista
+            }
+            if (basBala.getX() > getWidth()) {//checa derecha
+                lklBalas.remove(basBala); //borra al elemento de la lista
+            }
+        }
+    }
 
     public void checaColisionPrincipal() {
         /*AQUI CHECAR LA COLISION DE LAS PAREDES PARA OBJ PRINCIPAL*/
@@ -525,6 +560,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
         graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 50);
+        graDibujo.drawString("BALAS:" + lklBalas.size(), getWidth() - 100, 100);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
         if (iVidas == 0) {
