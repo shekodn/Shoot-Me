@@ -255,11 +255,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void disparo() {
        
         if (bDisparo) {
-            actualizaBala(lklBalas.get(iBalas));
+            
             Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
             lklBalas.add(basBala);
             
         }
+        
+        actualizaBala(lklBalas.get(iBalas));
           
     }
     
@@ -283,7 +285,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
            basBala.setX(basBala.getX() - (1 * iVelocidadBala)); 
            basBala.setY(basBala.getY() - (1 * iVelocidadBala));
  
-        } else {
+        } 
+        
+        else {
             
             actualizaBalasCartucho();
         }
