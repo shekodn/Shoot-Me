@@ -45,6 +45,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     /*IMAGENES*/
     private Image imaImagenFondo;        // para dibujar la imagen de fondo
     private Image imaImagenGameOver; //para dibujar cuando se acabe el juego
+    private Image imaImagenPausa;
     private Image imaImagenMalo; //para dibujar el objeto malo
     private Image imaImagenBueno; //para dibujar el objeto bueno
     private Image imaImagenBala; //Imagen de una balita
@@ -58,6 +59,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private URL urlImagenPrincipal;
     private URL urlImagenFondo;
     private URL urlImagenGameOver;
+    private URL urlImagenPausa;
     private URL urlImagenMalo;
     private URL urlImagenBueno;
     private URL urlImagenBala;
@@ -164,6 +166,10 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         // Creo la imagen del fin de juego
         urlImagenGameOver = this.getClass().getResource("gameOver1.jpg");
         imaImagenGameOver = Toolkit.getDefaultToolkit().getImage(urlImagenGameOver);
+        
+        // Creo la imagen de la pausa de juego
+        urlImagenPausa = this.getClass().getResource("GamePause.jpg");
+        imaImagenPausa = Toolkit.getDefaultToolkit().getImage(urlImagenPausa);
 
         //Creo la imagen del malo
         urlImagenMalo = this.getClass().getResource("bad.png");
@@ -310,16 +316,19 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
          */
         while (iVidas != 0) {
 
-            actualiza();
-            checaColision();
-            repaint();
-            try {
-                // El hilo del juego se duerme. 
-                Thread.sleep(20);
-            } catch (InterruptedException iexError) {
-                System.out.println("Hubo un error en el juego " + iexError.
-                        toString());
+            if (!bPause) {
+                actualiza();
+                checaColision();
+                //repaint();
+                try {
+                    // El hilo del juego se duerme. 
+                    Thread.sleep(20);
+                } catch (InterruptedException iexError) {
+                    System.out.println("Hubo un error en el juego " + iexError.
+                            toString());
+                }
             }
+            repaint();
         }
     }
 
@@ -454,6 +463,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public void paint(Graphics graGrafico) {
+        
+        if (!bPause){
         // Inicializan el DoubleBuffer
         if (imaImagenApplet == null) {
             imaImagenApplet = createImage(this.getSize().width,
@@ -466,7 +477,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
         graGrafico.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
                 this);
-
+        }
         // Actualiza el Foreground.
         graGrafico.setColor(getForeground());
         
@@ -488,8 +499,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void paint1(Graphics graDibujo) {
         /*IMAGENES*/
         // si la imagen ya se cargo
-        if (!bPause && basPrincipal != null && imaImagenFondo != null && lklMalos != null) 
-                {
+        if (!bPause && basPrincipal != null && imaImagenFondo != null && 
+                lklMalos != null) {
             // Dibuja la imagen de fondo
             graDibujo.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
                     this);
@@ -516,7 +527,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         if (bPause){
             
-            graDibujo.drawImage(imaImagenGameOver, 0, 0, getWidth(),
+            graDibujo.drawImage(imaImagenPausa, 0, 0, getWidth(),
                     getHeight(), this);
         }
 
@@ -560,31 +571,29 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
             bDisparo = true; //prendo booleana de teclas
             iDireccionBala = 3;
-
-            //ifs de opciones de juego 
-            if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {
-
-                bPause = true;
-                System.out.print("Pause");
-            }
-
-            if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
-                try {
-                    grabaArchivo();
-                } catch (IOException ex) {
-                    System.out.println("Error en " + ex.toString());
-                }
-            } else if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
-                try {
-                    leeArchivo();
-                } catch (IOException ex) {
-                    System.out.println("Error en " + ex.toString());
-                }
-            }
         }
 
-        
-        
+        //ifs de opciones de juego 
+        if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {
+
+            bPause = !bPause;
+        }
+
+        if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
+            try {
+                grabaArchivo();
+            } catch (IOException ex) {
+                System.out.println("Error en " + ex.toString());
+            }
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
+            try {
+                leeArchivo();
+            } catch (IOException ex) {
+                System.out.println("Error en " + ex.toString());
+            }
+
+        }
+
         //if de basPrincipal 
         if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {//1
             iDireccion = 1;//arriba-izq
