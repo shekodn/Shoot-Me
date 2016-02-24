@@ -84,8 +84,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             //inclinacioon
     
     private int iVelocidadBala; //controla la velocidad de la bala 
-    
-    private long tiempoActual;	//Tiempo de control de la animación
+   
     private int iPosicionVidas; //Offset de vidas en el applet 
 
    
@@ -273,14 +272,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      */
     public void reposicionaMalo(Base basMalo) {
         //reposiciona a un elemento en especifico
-        basMalo.setX((int)(Math.random()*(getWidth() - basMalo.getAncho())));
-        basMalo.setY(((int)(Math.random()* (-1 * getHeight())))); 
+        basMalo.setX((int) (Math.random() * (getWidth() - basMalo.getAncho())));
+        basMalo.setY(((int) (Math.random() * (-1 * getHeight()))));
+        //basMalo.setY((int) (Math.random() * (40)-(-1*(getHeight()+90))));
     }
     
     
     
     /**
-     * reposicionaMalo
+     * disparo
      *
      * Metodo que reposiciona a un elmento de la lista de objetos denominados 
      * como bala
@@ -454,15 +454,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 }
             }
         }
-        /*
+        
         //CHECA LA COLISION DE LOS MALOS Y EL APPLET
         for (Base basMalo : lklMalos) {
-            //Si los malos llegan al otro lado then..
-            if (basMalo.getX() < 0) {
+            //Si los malos llegan al final
+            if (basMalo.getY() > 500) {
                 reposicionaMalo(basMalo); //cambia la posicion del elemento
             }
         }
-        */
+        
     }
 
 
@@ -646,9 +646,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             bPressed = true; //prendo booleana de teclas
 
         }
+        
     }
     
-    @Override
     public void keyReleased(KeyEvent keyEvent) {
         
         bPressed = false; //apago booleana de teclas
