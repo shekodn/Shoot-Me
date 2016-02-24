@@ -440,6 +440,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             if (basPrincipal.intersecta(basMalo)) {
                 bump.play(); //sonido al colisionar
                 reposicionaMalo(basMalo); //cambia posicion del que colisiona
+                iPuntos--;
                 iContMalo++;
                 
                 //checar si se debe quitar vida
