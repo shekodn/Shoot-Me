@@ -109,8 +109,8 @@ public class Bala extends Base{
             setY(getY() - (1 * getVel()));
 
         } else {//se queda en la misma posicion 
-            setX(basPrincipal.getX());
-            setY(basPrincipal.getY());
+            setX(basPrincipal.getX() - 100);
+            setY(basPrincipal.getY() - 100);
 
         }
 

@@ -295,9 +295,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             lklBalas.add(basBala);
             
         }
-        
-        lklBalas.get(iBalas).avanza();
-          
+                  
     }
     
     
@@ -573,7 +571,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
             
-            basBala.avanza();
+            basBala.avanza(basPrincipal);
             
         }
 
