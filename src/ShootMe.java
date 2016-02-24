@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -9,15 +8,6 @@ import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.LinkedList;
 import javax.swing.JFrame;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Juego1
@@ -560,7 +550,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
-        graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 
+        
+        graDibujo.drawString("Score: " + iPuntos, getWidth() - 100, 
                 getHeight() - 20);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
