@@ -35,9 +35,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     /*OBJETOS*/
     private Base basPrincipal;         // Objeto principal
     /*Lista de los malitos*/
-    private LinkedList<Base> lklMalos; //Objetos malos (salen de la derecha)
+    private LinkedList<Malo> lklMalos; //Objetos malos (salen de la derecha)
     
-    private LinkedList<Base> lklBalas; // Objeto bala que destruye a malos 
+    private LinkedList<Bala> lklBalas; // Objeto bala que destruye a malos 
     private LinkedList<Base> lklVidas; //Lista con vidas 
     
     private boolean bDisparo; //bandera para generar una nueva bala
@@ -83,7 +83,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iDireccionBala; //Maraca si la vala sale horizontal o con 
             //inclinacioon
     
-    private int iVelocidadBala; //controla la velocidad de la bala 
    
     private int iPosicionVidas; //Offset de vidas en el applet 
 
@@ -108,7 +107,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public ShootMe() {
-        fall = new SoundClip("beep1.wav");
         bump = new SoundClip("gunshot3.wav");
         
         initVars();
@@ -131,8 +129,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     /**
      */
     public void initVars() {
-        lklMalos = new LinkedList<Base>(); //Creo lista de malitos
-        lklBalas = new LinkedList<Base>(); //Creo la lista de balas
+        lklMalos = new LinkedList<Malo>(); //Creo lista de malitos
+        lklBalas = new LinkedList<Bala>(); //Creo la lista de balas
         lklVidas = new LinkedList<Base>(); //se crean vidas
       
         bPause = false; //Juego comienza sin pausa 
@@ -145,7 +143,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         iRandomMalos = (int) (Math.random() * 4) + 8;
        
         iDireccionBala = 12; //se iniciliza la bala apuntando arriba
-        iVelocidadBala = 3;
         
         bDisparo = false; //bandera que controla el disparo
 
@@ -203,7 +200,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //Creo el objeto para las balas 
         for (int iI = 0; iI < 1; iI++) {
             //creo a un malito
-            Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage
+            Bala basBala = new Bala ('0', 1, 0, 0, Toolkit.getDefaultToolkit().getImage
                 (urlImagenBala));
             
             //añado un elemento de bala a la lista 
@@ -224,7 +221,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //Creo el objeto para el malo
         for (int iI = 0; iI < iRandomMalos; iI++) {
             //creo a un malito
-            Base basMalo = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+            Malo basMalo = new Malo(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
             //añado un elemento-malito a la lista 
             lklMalos.add(basMalo);
         }
@@ -293,7 +290,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
        
         if (bDisparo) {
             
-            Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
+            Bala basBala = new Bala('0', 1, 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
             lklBalas.add(basBala);
             
         }
@@ -302,25 +299,25 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
           
     }
     
-    public void actualizaBala(Base basBala) {
+    public void actualizaBala(Bala basBala) {
         
         if (iDireccionBala == 12) {
             
-           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
             
         }
         
         if (iDireccionBala == 3) {
             
-           basBala.setX(basBala.getX() + (1 * iVelocidadBala)); 
-           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+           basBala.setX(basBala.getX() + (1 * basBala.getVel())); 
+           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
             
         }
         
         if (iDireccionBala == 9) {
             
-           basBala.setX(basBala.getX() - (1 * iVelocidadBala)); 
-           basBala.setY(basBala.getY() - (1 * iVelocidadBala));
+           basBala.setX(basBala.getX() - (1 * basBala.getVel())); 
+           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
  
         } 
         
@@ -702,11 +699,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         sLinea = finArchivo.readLine();
         iRandomMalos = Integer.parseInt(sLinea);
         
-         lklMalos = new LinkedList<Base>(); //Creo lista de buenitos
+         lklMalos = new LinkedList<Malo>(); //Creo lista de malos
         //Creo el objeto para el bueno
         for (int iI = 0; iI < iRandomMalos; iI++) {
             //creo a un bueno
-            Base basMalo = new Base(0, 0, Toolkit.getDefaultToolkit().
+            Malo basMalo = new Malo(0, 0, Toolkit.getDefaultToolkit().
                     getImage(urlImagenMalo));
             //añado un elemento-bueno a la lista 
             lklMalos.add(basMalo);

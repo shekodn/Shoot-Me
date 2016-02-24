@@ -32,8 +32,8 @@ public class Bala extends Base{
     public Bala(char cTipo, int iVel, int iX, int iY, Image imaImagen) {
         super(iX, iY, imaImagen);
         
-        this.cTipo = 0;
-        this.iVel = 1;
+        this.cTipo = cTipo;
+        this.iVel = iVel;
     }  
 
     /**
