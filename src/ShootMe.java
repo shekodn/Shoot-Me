@@ -154,7 +154,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         imaImagenApplet = Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal);
 
         // Creo la imagen de fondo
-        urlImagenFondo = this.getClass().getResource("field.jpg");
+        urlImagenFondo = this.getClass().getResource("images/field.png");
         imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
 
         // Creo la imagen del fin de juego
@@ -166,7 +166,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         imaImagenPausa = Toolkit.getDefaultToolkit().getImage(urlImagenPausa);
 
         //Creo la imagen del malo
-        urlImagenMalo = this.getClass().getResource("malos.gif");
+        urlImagenMalo = this.getClass().getResource("images/malos.gif");
         imaImagenMalo = Toolkit.getDefaultToolkit().getImage(urlImagenMalo);
 
         //Creo la imagen del bueno
@@ -490,7 +490,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
 
         // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("field.jpg");
+        URL urlImagenFondo = this.getClass().getResource("images/field.png");
         imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
         graGrafico.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
                 this);
@@ -555,7 +555,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
-        graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 50);
+        graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 
+                getHeight() - 20);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
         if (iVidas == 0) {
