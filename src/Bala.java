@@ -77,11 +77,46 @@ public class Bala extends Base{
      * 
      * Metodo de acceso que regresa la posicion en x del objeto 
      * 
-     * @return iVel es la <code>posicion en x</code> del objeto.
+     * @return iVel es la <code>velocidad de bala</code> del objeto.
      * 
      */
     public int getVel() {
             return iVel;
     }
+    
+    
+    
+    public void avanza() {
+
+        if (cTipo == 'c') {//centro
+
+            setY(getY() - (1 * iVel));
+
+        }
+
+        if (cTipo == 'd') {//derecha
+
+            setY(getY() - (1 * iVel));
+
+            setX(getX() + (1 * getVel()));
+            setY(getY() - (1 * getVel()));
+
+        }
+
+        if (cTipo == 'i') {//izquierda
+
+            setX(getX() - (1 * getVel()));
+            setY(getY() - (1 * getVel()));
+
+        } else {
+            //for (Base basBala : lklBalas) {
+            setX(getX());
+            setY(getY());
+
+        }
+
+    }
+    
+    
     
 }

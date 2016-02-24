@@ -296,39 +296,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             
         }
         
-        actualizaBala(lklBalas.get(iBalas));
+        lklBalas.get(iBalas).avanza();
           
     }
     
-    public void actualizaBala(Bala basBala) {
-        
-        if (iDireccionBala == 12) {
-            
-           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
-            
-        }
-        
-        if (iDireccionBala == 3) {
-            
-           basBala.setX(basBala.getX() + (1 * basBala.getVel())); 
-           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
-            
-        }
-        
-        if (iDireccionBala == 9) {
-            
-           basBala.setX(basBala.getX() - (1 * basBala.getVel())); 
-           basBala.setY(basBala.getY() - (1 * basBala.getVel()));
- 
-        } 
-        
-        else {
-            
-            actualizaBalasCartucho();
-        }
-       
-        
-    }
+    
 
     /**
      * run
