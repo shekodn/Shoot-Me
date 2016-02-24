@@ -566,8 +566,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
 
             bDisparo = true; //prendo booleana de teclas
-            iDireccionBala = 12;
-
+            
+            Bala basBala = new Bala('0',0,0, 0, Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
+            
+            basBala.avanza();
+            
         }
 
         if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
