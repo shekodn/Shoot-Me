@@ -12,14 +12,11 @@ import java.awt.Image;
  */
 
 public class Bala extends Base{
-    
-    public Bala(int iX, int iY, Image imaImagen) {
-        super(iX, iY, imaImagen);
-    }  
-    
+        
     private char cTipo;
     private int iVel;
     
+
     /**
      * Bala
      * 
@@ -32,9 +29,13 @@ public class Bala extends Base{
      * @param imaImagen es la <code>imagen</code> del objeto.
      * 
      */
-    
+    public Bala(char cTipo, int iVel, int iX, int iY, Image imaImagen) {
+        super(iX, iY, imaImagen);
+        
+        this.cTipo = 0;
+        this.iVel = 1;
+    }  
 
-    
     /**
      * setTipo
      * 
