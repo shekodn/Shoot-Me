@@ -402,7 +402,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 if (iContMalo >= 5) {//cada 5 colisiones quita 1 vida
                     iVidas--; //quito vida
                     lklVidas.removeLast();
-                    iVelocidad++;
+                    iVelocidad++;                    
                     iContMalo = 0; //reinicio contador a 0
                 }
             }
