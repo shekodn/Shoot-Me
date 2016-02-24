@@ -68,7 +68,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private URL urlImagenVida;
 
     /*AUDIOS*/
-    private SoundClip fall; // Audio al haber colisión con el suelo
+    private SoundClip soundDestruye; // Audio al haber colisión con el suelo
     private SoundClip bump;  //Audio al hacer colison entre objetos
 
     /*ENTEROS*/
@@ -108,6 +108,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public ShootMe() {
 
         bump = new SoundClip("gunshot3.wav");
+        soundDestruye = new SoundClip("beep1.wav");
         
         initVars();
         creaImagenes();
@@ -429,10 +430,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         for (Malo basMalo : lklMalos) {
             for (Bala basBala : lklBalas) {
                 if (basBala.intersecta(basMalo)) {
-                    bump.play(); //sonido al colisionar
+                    
                     lklBalas.remove(basBala); //borra al elemento de la lista
                     reposicionaMalo(basMalo); //cambia posicion del malo
                     iPuntos += 10;
+                    soundDestruye.play();//sonido al colisionar
                 }
             }
         }
