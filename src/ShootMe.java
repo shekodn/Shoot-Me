@@ -367,18 +367,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
     }
     
-    public void actualizaBalasCartucho() {
-        
-        for (Base basBala:lklBalas){
-            
-            basBala.setX(basPrincipal.getX());
-            basBala.setY(basPrincipal.getY());
-            
-            
-        }
-        
-    }
-
     public void actualizaListas() {
         for (Base basMalo : lklMalos) { //Mover a cada objeto
             //Los malos caen
