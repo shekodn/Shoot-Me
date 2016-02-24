@@ -578,44 +578,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
     public void keyPressed(KeyEvent keyEvent) {
     
-        //ifs de disparos
-        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//centro
-
-            bDisparo = true; //prendo booleana de teclas
-            
-            Bala basBala = new Bala('c', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
-                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
-                    getImage(urlImagenBala));
-            
-            //añado un elemento-bueno a la lista 
-            lklBalas.add(basBala);
-        }
-
-        if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//izaquierda
-
-            bDisparo = true; //prendo booleana de teclas
-            
-            Bala basBala = new Bala('i', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
-                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
-                    getImage(urlImagenBala));
-            
-            //añado un elemento-bueno a la lista 
-            lklBalas.add(basBala);
-
-        }
-
-        if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//derecha
-
-            bDisparo = true; //prendo booleana de teclas
-            
-             Bala basBala = new Bala('d', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
-                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
-                    getImage(urlImagenBala));
-            
-            //añado un elemento-bueno a la lista 
-            lklBalas.add(basBala);
-        }
-
         //ifs de opciones de juego 
         if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {
 
@@ -653,6 +615,46 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     }
     
     public void keyReleased(KeyEvent keyEvent) {
+        
+        //ifs de disparos
+        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//centro
+
+            bDisparo = true; //prendo booleana de teclas
+            
+            Bala basBala = new Bala('c', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
+        }
+
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//izaquierda
+
+            bDisparo = true; //prendo booleana de teclas
+            
+            Bala basBala = new Bala('i', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
+
+        }
+
+        if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//derecha
+
+            bDisparo = true; //prendo booleana de teclas
+            
+             Bala basBala = new Bala('d', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
+        }
+        
+        
         
         bPressed = false; //apago booleana de teclas
         bDisparo = false;
