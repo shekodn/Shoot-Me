@@ -279,7 +279,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
          */
         while (true) {
 
-            if (!bPause || !bGameOver) {
+            if (!bPause && !bGameOver) {
                 
                 actualiza();
                 checaColision();
