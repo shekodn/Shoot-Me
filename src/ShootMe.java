@@ -107,6 +107,10 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      */
     public ShootMe() {
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         bump = new SoundClip("gunshot3.wav");
         
         initVars();
