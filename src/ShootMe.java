@@ -80,7 +80,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iRandomMalos; //indica el # de malos a crear
     private int iRandomBuenos; //indica el # de buenos a crear
     private int iBalas; //Numero de balas
-    private int iDireccionBala; //Maraca si la vala sale horizontal o con 
             //inclinacioon
     
    
@@ -142,9 +141,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         /* genero el random de los malitos entre 8 y 10*/
         iRandomMalos = (int) (Math.random() * 4) + 8;
-       
-        iDireccionBala = 12; //se iniciliza la bala apuntando arriba
-        
+               
         bDisparo = false; //bandera que controla el disparo
 
         iVelocidad = 2; //Inicializo velocidad inicial
@@ -198,15 +195,15 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         basPrincipal = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
         
         
-        //Creo el objeto para las balas 
-        for (int iI = 0; iI < 1; iI++) {
-            //creo a un malito
-            Bala basBala = new Bala ('0', 1, 0, 0, Toolkit.getDefaultToolkit().getImage
-                (urlImagenBala));
-            
-            //añado un elemento de bala a la lista 
-            lklBalas.add(basBala);
-        }
+//        //Creo el objeto para las balas 
+//        for (int iI = 0; iI < 1; iI++) {
+//            //creo a un malito
+//            Bala basBala = new Bala ('0', 2, 0, 0, Toolkit.getDefaultToolkit().getImage
+//                (urlImagenBala));
+//            
+//            //añado un elemento de bala a la lista 
+//            lklBalas.add(basBala);
+//        }
         
         //Creo el objeto para las vidas 
         for (int iI = 0; iI < iVidas; iI++) {
@@ -239,12 +236,12 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             reposicionaMalo(basMalo);
         }
         
-        //Se posiciona a los objetos bala, en el jFrame
-        for (Bala basBala : lklBalas) {
-           basBala.setX(basPrincipal.getX()-100);
-           basBala.setY(basPrincipal.getY() -100);
-           
-        }
+//        //Se posiciona a los objetos bala, en el jFrame
+//        for (Bala basBala : lklBalas) {
+//           basBala.setX(basPrincipal.getX()-100);
+//           basBala.setY(basPrincipal.getY() -100);
+//           
+//        }
         
         //Se posiciona a los objetos malos, en derecha y fuera del applet
         for (Base basVida : lklVidas) {
@@ -283,14 +280,14 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      * Metodo que reposiciona a un elmento de la lista de objetos denominados 
      * como bala
      *
-     * @param basBala , es el objeto de la lista que necesita ser reposicionado
+     *
      * 
      *
      */
     public void actualizaBalas() {
                          
         for (Bala basBala : lklBalas){
-            basBala.avanza(basPrincipal);
+            basBala.avanza();
         }
     }
     
@@ -546,28 +543,41 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
     
         //ifs de disparos
-        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//centro
 
             bDisparo = true; //prendo booleana de teclas
             
-            Bala basBala = new Bala('c',0,0, 0, Toolkit.getDefaultToolkit().
+            Bala basBala = new Bala('c', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
             
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
         }
 
-        if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//izaquierda
 
             bDisparo = true; //prendo booleana de teclas
-            iDireccionBala = 9;
+            
+            Bala basBala = new Bala('i', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
 
         }
 
-        if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//2
+        if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//derecha
 
             bDisparo = true; //prendo booleana de teclas
-            iDireccionBala = 3;
+            
+             Bala basBala = new Bala('d', 2, basPrincipal.getX()+basPrincipal.getAncho()/2, 
+                    basPrincipal.getY(), Toolkit.getDefaultToolkit().
+                    getImage(urlImagenBala));
+            
+            //añado un elemento-bueno a la lista 
+            lklBalas.add(basBala);
         }
 
         //ifs de opciones de juego 

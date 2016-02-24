@@ -86,17 +86,17 @@ public class Bala extends Base{
     
     
     
-    public void avanza(Base basPrincipal) {
+    public void avanza() {
 
         if (cTipo == 'c') {//centro
 
-            setY(getY() - (1 * iVel));
+            setY(getY() - (getVel()));
 
         }
 
         if (cTipo == 'd') {//derecha
 
-            setY(getY() - (1 * iVel));
+            setY(getY() - (getVel()));
 
             setX(getX() + (1 * getVel()));
             setY(getY() - (1 * getVel()));
@@ -107,10 +107,6 @@ public class Bala extends Base{
 
             setX(getX() - (1 * getVel()));
             setY(getY() - (1 * getVel()));
-
-        } else {//se queda en la misma posicion 
-            setX(basPrincipal.getX() - 100);
-            setY(basPrincipal.getY() - 100);
 
         }
 
