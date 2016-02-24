@@ -247,9 +247,12 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void reposicionaMalo(Base basMalo) {
         //reposiciona a un elemento en especifico
         basMalo.setX((int) (Math.random() * (getWidth() - basMalo.getAncho())));
+       
+        //basMalo.setY((int) (Math.random() * 100) + (basMalo.getAlto()+50)); 
         
-        
-        basMalo.setY((int) (Math.random() * 100) + (basMalo.getAlto()+50)); //3-5
+        basMalo.setY(((int)(Math.random()* (-2 * getHeight())))); 
+
+        //3-5
         
         //basMalo.setY(((int) (Math.random() * (-1 * getHeight()))));
     }
