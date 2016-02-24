@@ -37,7 +37,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     /*Lista de los malitos*/
     private LinkedList<Base> lklMalos; //Objetos malos (salen de la derecha)
     
-    private LinkedList<Base> lklBalas; // Objeto bala que destruye a malos  
+    private LinkedList<Base> lklBalas; // Objeto bala que destruye a malos 
+    private LinkedList<Base> lklVidas; //Lista con vidas 
     
     private boolean bDisparo; //bandera para generar una nueva bala
    
@@ -49,6 +50,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private Image imaImagenMalo; //para dibujar el objeto malo
     private Image imaImagenBueno; //para dibujar el objeto bueno
     private Image imaImagenBala; //Imagen de una balita
+    private Image imaImagenVida; //imagen de la vida
     
     /* objetos para manejar el buffer del Applet y que la imagen no parpadee */
     private Image imaImagenApplet;   // Imagen a proyectar en Applet (principal)
@@ -63,6 +65,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private URL urlImagenMalo;
     private URL urlImagenBueno;
     private URL urlImagenBala;
+    private URL urlImagenVida;
 
     /*AUDIOS*/
     private SoundClip fall; // Audio al haber colisión con el suelo
@@ -83,6 +86,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iVelocidadBala; //controla la velocidad de la bala 
     
     private long tiempoActual;	//Tiempo de control de la animación
+    private int iPosicionVidas; //Offset de vidas en el applet 
 
    
     /*VECTORES*/
@@ -130,10 +134,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void initVars() {
         lklMalos = new LinkedList<Base>(); //Creo lista de malitos
         lklBalas = new LinkedList<Base>(); //Creo la lista de balas
+        lklVidas = new LinkedList<Base>(); //se crean vidas
       
         bPause = false; //Juego comienza sin pausa 
         
         iBalas = 0; //se inicializa el cartucho con la bala de la posicion 0
+        
+        iPosicionVidas = 0;
 
         /* genero el random de los malitos entre 8 y 10*/
         iRandomMalos = (int) (Math.random() * 4) + 8;
@@ -145,7 +152,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         iVelocidad = 1; //Inicializo velocidad inicial
         iPuntos = 0; //Inicializar los puntos
-        iVidas = (int) (Math.random() * 4) + 3; //Inicializo el valor de las vidas
+        iVidas = 5;
         iContMalo = 0; //Inicializo contaor
 
         nombreArchivo = "Puntaje.txt";//nombre del archivo
@@ -182,6 +189,10 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         //Creo la imagen de la bala 
         urlImagenBala = this.getClass().getResource("bala.png");
         imaImagenBueno = Toolkit.getDefaultToolkit().getImage(urlImagenBala);
+        
+        //Creo la imagen de la vida 
+        urlImagenVida = this.getClass().getResource("vidas.png");
+        imaImagenVida = Toolkit.getDefaultToolkit().getImage(urlImagenVida);
 
     }
 
@@ -198,6 +209,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             
             //añado un elemento de bala a la lista 
             lklBalas.add(basBala);
+        }
+        
+        //Creo el objeto para las vidas 
+        for (int iI = 0; iI < iVidas; iI++) {
+            //creo a un malito
+            Base basVida = new Base(0, 0, Toolkit.getDefaultToolkit().getImage
+                (urlImagenVida));
+            
+            //añado un elemento de bala a la lista 
+            lklVidas.add(basVida);
         }
         
         
@@ -227,6 +248,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
            basBala.setY(basPrincipal.getY() -100);
            
         }
+        
+        //Se posiciona a los objetos malos, en derecha y fuera del applet
+        for (Base basVida : lklVidas) {
+           basVida.setX(iPosicionVidas + 10);
+           basVida.setY(30);
+           
+           iPosicionVidas = iPosicionVidas + 45;
+        }
+        
+        
         
     }
 
@@ -517,6 +548,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             for (Base basBala : lklBalas) {
                 basBala.paint(graDibujo, this);
             }
+            
+            //Dibuja las vidas
+            for (Base basVida : lklVidas) {
+                basVida.paint(graDibujo, this);
+            }
 
         } // sino se ha cargado se dibuja un mensaje 
         
@@ -533,8 +569,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
-        graDibujo.drawString("Vidas:" + iVidas, 20, 45);
-        graDibujo.drawString("Score:" + iPuntos, 20, 60);
+        graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 50);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
         if (iVidas == 0) {
