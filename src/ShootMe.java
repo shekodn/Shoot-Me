@@ -166,7 +166,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         imaImagenPausa = Toolkit.getDefaultToolkit().getImage(urlImagenPausa);
 
         //Creo la imagen del malo
-        urlImagenMalo = this.getClass().getResource("bad.png");
+        urlImagenMalo = this.getClass().getResource("malos.gif");
         imaImagenMalo = Toolkit.getDefaultToolkit().getImage(urlImagenMalo);
 
         //Creo la imagen del bueno
