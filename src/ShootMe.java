@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @authors Sergio Diaz A01192313, Ana Karen Beltran A01192508
  * @version 1
- * @date 16/feb/2016
+ * @date 23/feb/2016
  */
 public class ShootMe extends JFrame implements Runnable, KeyListener {
 
