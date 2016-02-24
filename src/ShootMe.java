@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,12 +35,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private Base basPrincipal;         // Objeto principal
     /*Lista de los malitos*/
     private LinkedList<Malo> lklMalos; //Objetos malos (salen de la derecha)
-    
+    /*Lista de las balas*/
     private LinkedList<Bala> lklBalas; // Objeto bala que destruye a malos 
+    /*Lista de las vidas*/
     private LinkedList<Base> lklVidas; //Lista con vidas 
     
-    private boolean bDisparo; //bandera para generar una nueva bala
-   
     
     /*IMAGENES*/
     private Image imaImagenFondo;        // para dibujar la imagen de fondo
@@ -79,15 +77,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iContMalo; //Lleva la cuenta de cuantos malos han colisionado
     private int iRandomMalos; //indica el # de malos a crear
     private int iRandomBuenos; //indica el # de buenos a crear
-    private int iBalas; //Numero de balas
-            //inclinacioon
-    
-   
+    private int iBalas; //Numero de balas   
     private int iPosicionVidas; //Offset de vidas en el applet 
 
-   
-    /*VECTORES*/
-    private Vector vec;    // Objeto vector para agregar el puntaje.
 
     /*STRINGS */
     private String nombreArchivo;    //Nombre del archivo.
@@ -96,6 +88,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     /*BOOLEANOS*/
     private boolean bPressed; //Indica si una tecla esta siendo presionada
     private boolean bPause;    //Boleano para pausar el juego.
+    private boolean bGameOver; //Indica si ya acabo el juego
+    private boolean bDisparo; //bandera para generar una nueva bala
 
     /**
      * init
@@ -150,8 +144,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         iVidas = 5;
         iContMalo = 0; //Inicializo contaor
 
-        nombreArchivo = "Puntaje.txt";//nombre del archivo
-        vec = new Vector();//crea vector de puntos
 
         bPressed = false; //inicializa el booleano de pressed
     }
@@ -196,16 +188,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         basPrincipal = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
         
         
-//        //Creo el objeto para las balas 
-//        for (int iI = 0; iI < 1; iI++) {
-//            //creo a un malito
-//            Bala basBala = new Bala ('0', 2, 0, 0, Toolkit.getDefaultToolkit().getImage
-//                (urlImagenBala));
-//            
-//            //añado un elemento de bala a la lista 
-//            lklBalas.add(basBala);
-//        }
-        
         //Creo el objeto para las vidas 
         for (int iI = 0; iI < iVidas; iI++) {
             //creo a un malito
@@ -236,13 +218,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         for (Base basMalo : lklMalos) {
             reposicionaMalo(basMalo);
         }
-        
-//        //Se posiciona a los objetos bala, en el jFrame
-//        for (Bala basBala : lklBalas) {
-//           basBala.setX(basPrincipal.getX()-100);
-//           basBala.setY(basPrincipal.getY() -100);
-//           
-//        }
+
         
         //Se posiciona a los objetos malos, en derecha y fuera del applet
         for (Base basVida : lklVidas) {
@@ -275,24 +251,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     
     
     
-    /**
-     * disparo
-     *
-     * Metodo que reposiciona a un elmento de la lista de objetos denominados 
-     * como bala
-     *
-     *
-     * 
-     *
-     */
-    public void actualizaBalas() {
-                         
-        for (Bala basBala : lklBalas){
-            basBala.avanza();
-        }
-    }
-    
-    
 
     /**
      * run
@@ -307,21 +265,22 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
            se checa si hubo colisiones para desaparecer jugadores o corregir
            movimientos y se vuelve a pintar todo
          */
-        while (iVidas != 0) {
+        while (true) {
 
-            if (!bPause) {
-                actualiza();
-                checaColision();
-                //repaint();
-                try {
-                    // El hilo del juego se duerme. 
-                    Thread.sleep(20);
-                } catch (InterruptedException iexError) {
-                    System.out.println("Hubo un error en el juego " + iexError.
-                            toString());
+            if (iVidas != 0) {
+                if (!bPause) {
+                    actualiza();
+                    checaColision();
+                    try {
+                        // El hilo del juego se duerme. 
+                        Thread.sleep(20);
+                    } catch (InterruptedException iexError) {
+                        System.out.println("Hubo un error en el juego " + iexError.
+                                toString());
+                    }
                 }
+                repaint();
             }
-            repaint();
         }
         
         //gameover
@@ -340,7 +299,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         
     }
-
+    /**
+     * actualizaPrincipal
+     *
+     * Método usado actualizar al principal
+     * Se manda llamar en actualiza
+     *
+     */
     public void actualizaPrincipal() {
         //Si la tecla esta siendo presionada, cambiar su posicion del principal
         
@@ -359,7 +324,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
     }
     
-
+    /**
+     * actualizaListas
+     *
+     * Método usado actualizar la lista de malos
+     * Se manda llamr en actualiza
+     *
+     */
     public void actualizaListas() {
         for (Base basMalo : lklMalos) { //Mover a cada objeto
             //Los malos caen
@@ -367,6 +338,20 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             basMalo.setY(basMalo.getY() + (1 * iVelocidad));
         }
         
+    }
+    
+    /**
+     * actualizaBalas
+     *
+     * Metodo que actualiza la lista de balas, manda a llamar a avanza en Bala
+     * Se manda a llamar en actualiza
+     *
+     */
+    public void actualizaBalas() {
+                         
+        for (Bala basBala : lklBalas){
+            basBala.avanza();
+        }
     }
 
     /**
@@ -379,7 +364,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         chechaColisionMalos();
         checaColisionPrincipal();
         chechaColisionBalas();
-       
     }
 
     /**
@@ -387,6 +371,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      *
      * checa colision entre malos y principal, checa la colision de malos y el
      * applet
+     * Se manda llamar en checaColision
      */
     public void chechaColisionMalos() {
         /*FOR PARA CHECAR COLISION ENTRE MALO Y PRINCIPAL*/
@@ -419,15 +404,14 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     }
     /*
      * chechaColisionBalas
-     * chechaColisionMalos
-     *
+     * 
      * checa colision entre balas y malos
+     * checa colision entre balas y jframe
      */
      
     public void chechaColisionBalas() {
         
         //CHECA COLISION ENTRE BALAS Y MALOS
-        
         for (Malo basMalo : lklMalos) {
             for (int iI = 0; iI < lklBalas.size(); iI++) {
 
@@ -443,7 +427,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 }
             }
         }
-        
         
         //CHECA COLISION ENTRE BALAS Y JFRAME
         
@@ -573,7 +556,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         /*PUNTAJE Y VIDAS*/
         graDibujo.setColor(Color.white);
         graDibujo.drawString("Score:" + iPuntos, getWidth() - 100, 50);
-        graDibujo.drawString("BALAS:" + lklBalas.size(), getWidth() - 100, 100);
 
         //Dibuja imagen de fin de juego cuando se acaban las vidas
         if (iVidas == 0) {
@@ -584,32 +566,19 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
     public void keyTyped(KeyEvent keyEvent) {
          
-        
-       
-        
     }
 
     public void keyPressed(KeyEvent keyEvent) {
     
         //ifs de opciones de juego 
-        if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {
+        if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {//pausa
 
             bPause = !bPause;
         }
 
-        if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
-            try {
-                grabaArchivo();
-            } catch (IOException ex) {
-                System.out.println("Error en " + ex.toString());
-            }
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
-            try {
-                leeArchivo();
-            } catch (IOException ex) {
-                System.out.println("Error en " + ex.toString());
-            }
+        if ((keyEvent.getKeyCode() == KeyEvent.VK_R)) {//reiniciar juego
 
+            
         }
 
         //if de basPrincipal 
@@ -624,7 +593,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             bPressed = true; //prendo booleana de teclas
 
         }
-        
     }
     
     public void keyReleased(KeyEvent keyEvent) {
@@ -667,14 +635,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             lklBalas.add(basBala);
         }
         
-        
-        
         bPressed = false; //apago booleana de teclas
         bDisparo = false;
         if (keyEvent.getKeyCode() == KeyEvent.VK_A || keyEvent.getKeyCode() == KeyEvent.VK_S || keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
             iBalas++;
         }
-        
     }
 
     public int getHeight() {
@@ -683,85 +648,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
     public int getWidth() {
         return 800;
-    }
-
-    /**
-     * Metodo que lee a informacion de un archivo y lo agrega a un vector.
-     *
-     * @throws IOException
-     */
-    public void leeArchivo() throws IOException {
-        BufferedReader finArchivo;
-        try {
-            finArchivo = new BufferedReader(new FileReader(nombreArchivo));
-        } catch (FileNotFoundException e) {
-//    		File puntos = new File(nombreArchivo);
-//    		PrintWriter fileOut = new PrintWriter(puntos);
-//    		fileOut.println("100");
-//                fileOut.println("200");
-//    		fileOut.close();
-
-        }
-        finArchivo = new BufferedReader(new FileReader(nombreArchivo));
-        //leeo vidads
-        String sLinea = finArchivo.readLine();
-        iVidas = Integer.parseInt(sLinea);
-        //leo puntaje
-        sLinea = finArchivo.readLine();
-        iPuntos = Integer.parseInt(sLinea);
-        //leo posicion de prnicipal
-        sLinea = finArchivo.readLine();
-        basPrincipal.setX(Integer.parseInt(sLinea));
-        sLinea = finArchivo.readLine();
-        basPrincipal.setY(Integer.parseInt(sLinea));
-        
-        sLinea = finArchivo.readLine();
-        
-        sLinea = finArchivo.readLine();
-        iRandomMalos = Integer.parseInt(sLinea);
-        
-         lklMalos = new LinkedList<Malo>(); //Creo lista de malos
-        //Creo el objeto para el bueno
-        for (int iI = 0; iI < iRandomMalos; iI++) {
-            //creo a un bueno
-            Malo basMalo = new Malo(0, 0, Toolkit.getDefaultToolkit().
-                    getImage(urlImagenMalo));
-            //añado un elemento-bueno a la lista 
-            lklMalos.add(basMalo);
-            
-            sLinea = finArchivo.readLine();
-            basMalo.setX(Integer.parseInt(sLinea));
-            sLinea = finArchivo.readLine();
-            basMalo.setY(Integer.parseInt(sLinea));
-
-        }
-        
-        finArchivo.close();
-
-    }
-
-    /**
-     * Metodo que agrega la informacion del vector al archivo.
-     *
-     * @throws IOException
-     */
-    public void grabaArchivo() throws IOException {
-        PrintWriter fpwArchivo = new PrintWriter(new FileWriter(nombreArchivo));
-
-        fpwArchivo.println(iVidas);//vidas
-        fpwArchivo.println(iPuntos);//score
-        fpwArchivo.println(basPrincipal.getX());//posicion X principal
-        fpwArchivo.println(basPrincipal.getY());//posicion Y principal
-
-        
-        fpwArchivo.println(lklMalos.size());//cantidad de malos
-        
-        for (Base basMalo : lklMalos){
-            fpwArchivo.println(basMalo.getX());// x de malo
-            fpwArchivo.println(basMalo.getY());// y de malo
-        }
-
-        fpwArchivo.close();
     }
 
     public static void main(String[] args) {
