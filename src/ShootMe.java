@@ -150,7 +150,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         bDisparo = false; //bandera que controla el disparo
 
-        iVelocidad = 1; //Inicializo velocidad inicial
+        iVelocidad = 2; //Inicializo velocidad inicial
         iPuntos = 0; //Inicializar los puntos
         iVidas = 5;
         iContMalo = 0; //Inicializo contaor
@@ -447,6 +447,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
                 if (iContMalo >= 5) {//cada 5 colisiones quita 1 vida
                     iVidas--; //quito vida
                     lklVidas.removeLast();
+                    iVelocidad++;
                     iContMalo = 0; //reinicio contador a 0
                 }
             }
