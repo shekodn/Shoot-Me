@@ -74,7 +74,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     private int iContMalo; //Lleva la cuenta de cuantos malos han colisionado
     private int iRandomMalos; //indica el # de malos a crear
     private int iRandomBuenos; //indica el # de buenos a crear
-    private int iBalas;
+    private int iBalas; //Numero de balas
     private int iDireccionBala; //Maraca si la vala sale horizontal o con 
             //inclinacioon
     
@@ -92,7 +92,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
     /*BOOLEANOS*/
     private boolean bPressed; //Indica si una tecla esta siendo presionada
-    private boolean pause;    //Boleano para pausar el juego.
+    private boolean bPause;    //Boleano para pausar el juego.
 
     /**
      * init
@@ -129,7 +129,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         lklMalos = new LinkedList<Base>(); //Creo lista de malitos
         lklBalas = new LinkedList<Base>(); //Creo la lista de balas
       
-        iBalas = 1; //se inicializa el cartucho con una bala 
+        bPause = false; //Juego comienza sin pausa 
+        
+        iBalas = 0; //se inicializa el cartucho con la bala de la posicion 0
 
         /* genero el random de los malitos entre 8 y 10*/
         iRandomMalos = (int) (Math.random() * 4) + 8;
@@ -183,7 +185,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         
         //Creo el objeto para las balas 
-        for (int iI = 0; iI < iBalas; iI++) {
+        for (int iI = 0; iI < 1; iI++) {
             //creo a un malito
             Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage
                 (urlImagenBala));
@@ -215,7 +217,9 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         
         //Se posiciona a los objetos malos, en derecha y fuera del applet
         for (Base basBala : lklBalas) {
-            reposicionaMalo(basBala);
+           basBala.setX(basPrincipal.getX()-100);
+           basBala.setY(basPrincipal.getY() -100);
+           
         }
         
     }
@@ -250,15 +254,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      */
     public void disparo() {
        
-        //Se posiciona a los objetos malos, en derecha y fuera del applet
-        for (Base basBala : lklBalas) {
-                        
-            if (bDisparo) {
-                
-                lklBalas.add(basBala);
-                actualizaBala(basBala);
-           }
-        }  
+        if (bDisparo) {
+            actualizaBala(lklBalas.get(iBalas));
+            Base basBala = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
+            lklBalas.add(basBala);
+            
+        }
+          
     }
     
     public void actualizaBala(Base basBala) {
@@ -281,7 +283,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
            basBala.setX(basBala.getX() - (1 * iVelocidadBala)); 
            basBala.setY(basBala.getY() - (1 * iVelocidadBala));
  
+        } else {
+            
+            actualizaBalasCartucho();
         }
+       
         
     }
 
@@ -324,6 +330,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         actualizaListas();
         disparo();
         
+        
     }
 
     public void actualizaPrincipal() {
@@ -346,6 +353,13 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     
     public void actualizaBalasCartucho() {
         
+        for (Base basBala:lklBalas){
+            
+            basBala.setX(basPrincipal.getX());
+            basBala.setY(basPrincipal.getY());
+            
+            
+        }
         
     }
 
@@ -470,7 +484,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void paint1(Graphics graDibujo) {
         /*IMAGENES*/
         // si la imagen ya se cargo
-        if (basPrincipal != null && imaImagenFondo != null && lklMalos != null) 
+        if (!bPause && basPrincipal != null && imaImagenFondo != null && lklMalos != null) 
                 {
             // Dibuja la imagen de fondo
             graDibujo.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(),
@@ -490,9 +504,16 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
             }
 
         } // sino se ha cargado se dibuja un mensaje 
+        
         else {
             //Da un mensaje mientras se carga el dibujo	
             graDibujo.drawString("No se cargo la imagen..", 20, 20);
+        }
+        
+        if (bPause){
+            
+            graDibujo.drawImage(imaImagenGameOver, 0, 0, getWidth(),
+                    getHeight(), this);
         }
 
         /*PUNTAJE Y VIDAS*/
@@ -507,58 +528,81 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
     }
 
-    public void keyTyped(KeyEvent ke) {
+    public void keyTyped(KeyEvent keyEvent) {
+         
+        
+       
+        
     }
 
     public void keyPressed(KeyEvent keyEvent) {
+    
+        //ifs de disparos
+        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
 
-        if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {//1
-            iDireccion = 1;//arriba-izq
-            bPressed = true; //prendo booleana de teclas
-            
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {//2
-            iDireccion = 2;//arriba-derecha
-            bPressed = true; //prendo booleana de teclas
-            
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {//2
-         
             bDisparo = true; //prendo booleana de teclas
             iDireccionBala = 12;
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
+
+        }
+
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
 
             bDisparo = true; //prendo booleana de teclas
             iDireccionBala = 9;
 
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//2
+        }
+
+        if (keyEvent.getKeyCode() == KeyEvent.VK_S) {//2
 
             bDisparo = true; //prendo booleana de teclas
             iDireccionBala = 3;
 
-         
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
-            try {
-                grabaArchivo();
-            } catch (IOException ex) {
-                System.out.println("Error en " + ex.toString());
+            //ifs de opciones de juego 
+            if ((keyEvent.getKeyCode() == KeyEvent.VK_P)) {
+
+                bPause = true;
+                System.out.print("Pause");
             }
-        } else if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
-            try {
-                leeArchivo();
-            } catch (IOException ex) {
-                System.out.println("Error en " + ex.toString());
+
+            if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
+                try {
+                    grabaArchivo();
+                } catch (IOException ex) {
+                    System.out.println("Error en " + ex.toString());
+                }
+            } else if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
+                try {
+                    leeArchivo();
+                } catch (IOException ex) {
+                    System.out.println("Error en " + ex.toString());
+                }
             }
+        }
+
+        
+        
+        //if de basPrincipal 
+        if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {//1
+            iDireccion = 1;//arriba-izq
+            bPressed = true; //prendo booleana de teclas
+
+        }
+        
+        if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {//2
+            iDireccion = 2;//arriba-derecha
+            bPressed = true; //prendo booleana de teclas
+
         }
     }
-
+    
+    @Override
     public void keyReleased(KeyEvent keyEvent) {
-        bPressed = false; //apago booleana de teclas
         
-        if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE || keyEvent.getKeyCode() 
-                == KeyEvent.VK_A || keyEvent.getKeyCode() == KeyEvent.VK_S) {
-            
-            bDisparo = false;  
+        bPressed = false; //apago booleana de teclas
+        bDisparo = false;
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A || keyEvent.getKeyCode() == KeyEvent.VK_S || keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
+            iBalas++;
         }
-       
         
     }
 
