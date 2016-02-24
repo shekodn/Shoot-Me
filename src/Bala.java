@@ -1,19 +1,21 @@
-
 import java.awt.Image;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Bala
+ *
+ * Modela la definición de todos los objetos de tipo Bala
+ * <code>Bala</code>
+ *
+ * @author Sergio Diaz y Ana Karen Beltran
+ * @version 1
+ * @date 24/01/2016
  */
 
-/**
- *
- * @authors Sergio Diaz A01192313, Ana Karen Beltran A01192508
- * @version 1
- * @date 23/feb/2016
- */
-public class Bala extends Base {
+public class Bala extends Base{
+    
+    public Bala(int iX, int iY, Image imaImagen) {
+        super(iX, iY, imaImagen);
+    }  
     
     private char cTipo;
     private int iVel;
