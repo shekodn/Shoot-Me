@@ -86,7 +86,7 @@ public class Bala extends Base{
     
     
     
-    public void avanza() {
+    public void avanza(Base basPrincipal) {
 
         if (cTipo == 'c') {//centro
 
@@ -108,10 +108,9 @@ public class Bala extends Base{
             setX(getX() - (1 * getVel()));
             setY(getY() - (1 * getVel()));
 
-        } else {
-            //for (Base basBala : lklBalas) {
-            setX(getX());
-            setY(getY());
+        } else {//se queda en la misma posicion 
+            setX(basPrincipal.getX());
+            setY(basPrincipal.getY());
 
         }
 
