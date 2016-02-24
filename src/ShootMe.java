@@ -287,15 +287,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
      * 
      *
      */
-    public void disparo() {
-       
-        if (bDisparo) {
-            
-            Bala basBala = new Bala('0', 1, 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenBala));
-            lklBalas.add(basBala);
-            
+    public void actualizaBalas() {
+                         
+        for (Bala basBala : lklBalas){
+            basBala.avanza(basPrincipal);
         }
-                  
     }
     
     
@@ -342,7 +338,7 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void actualiza() {
         actualizaPrincipal();
         actualizaListas();
-        disparo();
+        actualizaBalas();
         
         
     }
@@ -365,17 +361,6 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
         }
     }
     
-    public void actualizaBalasCartucho() {
-        
-        for (Base basBala:lklBalas){
-            
-            basBala.setX(basPrincipal.getX());
-            basBala.setY(basPrincipal.getY());
-            
-            
-        }
-        
-    }
 
     public void actualizaListas() {
         for (Base basMalo : lklMalos) { //Mover a cada objeto
@@ -565,14 +550,11 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
             bDisparo = true; //prendo booleana de teclas
             
-            Bala basBala = new Bala('0',0,0, 0, Toolkit.getDefaultToolkit().
+            Bala basBala = new Bala('c',0,0, 0, Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
             
             //añado un elemento-bueno a la lista 
             lklBalas.add(basBala);
-            
-            basBala.avanza(basPrincipal);
-            
         }
 
         if (keyEvent.getKeyCode() == KeyEvent.VK_A) {//2
