@@ -132,7 +132,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
     public void creaImagenes() {
         // Defino la imagen principal
         urlImagenPrincipal = this.getClass().getResource("images/girl.png");
-        imaImagenApplet = Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal);
+        imaImagenApplet = 
+                Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal);
 
         // Creo la imagen de fondo
         urlImagenFondo = this.getClass().getResource("images/field.png");
@@ -163,12 +164,14 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
     public void creaObjetos() {
         // Creo el objeto para principal
-        basPrincipal = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
+        basPrincipal = new Base(0, 0, 
+                Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
 
         //Creo el objeto para las vidas 
         for (int iI = 0; iI < iVidas; iI++) {
             //creo a un malito
-            Base basVida = new Base(0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenVida));
+            Base basVida = new Base(0, 0, Toolkit.getDefaultToolkit().
+                    getImage(urlImagenVida));
 
             //añado un elemento de bala a la lista 
             lklVidas.add(basVida);
@@ -179,7 +182,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
             for (int iI = 0; iI < 1; iI++) {
                 //creo a un malito
-                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().
+                        getImage(urlImagenMalo));
                 //añado un elemento-malito a la lista 
                 lklMalos.add(basMalo);
             }
@@ -188,7 +192,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
             for (int iI = 0; iI < 2; iI++) {
                 //creo a un malito
-                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+                Malo basMalo = new Malo('s', 0, 0, Toolkit.getDefaultToolkit().
+                        getImage(urlImagenMalo));
                 //añado un elemento-malito a la lista 
                 lklMalos.add(basMalo);
             }
@@ -197,7 +202,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
         for (int iI = 0; iI < iRandomMalos; iI++) {
             //creo a un malito
-            Malo basMalo = new Malo('n', 0, 0, Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+            Malo basMalo = new Malo('n', 0, 0, Toolkit.getDefaultToolkit().
+                    getImage(urlImagenMalo));
             //añado un elemento-malito a la lista 
             lklMalos.add(basMalo);
         }
@@ -638,7 +644,8 @@ public class ShootMe extends JFrame implements Runnable, KeyListener {
 
            
 
-            Bala basBala = new Bala('c', 2, basPrincipal.getX() + basPrincipal.getAncho() / 2,
+            Bala basBala = new Bala('c', 2, basPrincipal.getX() + basPrincipal.
+                    getAncho() / 2,
                     basPrincipal.getY(), Toolkit.getDefaultToolkit().
                     getImage(urlImagenBala));
 
